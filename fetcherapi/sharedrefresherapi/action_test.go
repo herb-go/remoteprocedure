@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/herb-go/fetcher"
 )
 
 type testRefresher struct {
@@ -76,4 +78,20 @@ func TestAction(t *testing.T) {
 		t.Fatal()
 	}
 	resp.Body.Close()
+	f := Fetcher{
+		Server: &fetcher.Server{
+			ServerInfo: fetcher.ServerInfo{
+				URL: s.URL,
+			},
+		},
+	}
+	data, err = f.RefreshShared([]byte("error"))
+	if err == nil || len(data) != 0 {
+		t.Fatal(data, err)
+	}
+	data, err = f.RefreshShared([]byte("data"))
+	if err != nil || bytes.Compare(data, []byte("testdata")) != 0 {
+		t.Fatal(data, err)
+	}
+
 }
