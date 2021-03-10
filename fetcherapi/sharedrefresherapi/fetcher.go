@@ -6,13 +6,9 @@ import (
 	"github.com/herb-go/fetcher"
 )
 
-type Fetcher struct {
-	Server *fetcher.Server
-}
-
-func (f *Fetcher) RefreshShared(data []byte) ([]byte, error) {
+func FetcherRefreshShared(s *fetcher.Server, data []byte) ([]byte, error) {
 	var result = []byte{}
-	p, err := f.Server.CreatePreset()
+	p, err := s.CreatePreset()
 	if err != nil {
 		return nil, err
 	}

@@ -78,18 +78,16 @@ func TestAction(t *testing.T) {
 		t.Fatal()
 	}
 	resp.Body.Close()
-	f := Fetcher{
-		Server: &fetcher.Server{
-			ServerInfo: fetcher.ServerInfo{
-				URL: s.URL,
-			},
+	server := &fetcher.Server{
+		ServerInfo: fetcher.ServerInfo{
+			URL: s.URL,
 		},
 	}
-	data, err = f.RefreshShared([]byte("error"))
+	data, err = FetcherRefreshShared(server, []byte("error"))
 	if err == nil || len(data) != 0 {
 		t.Fatal(data, err)
 	}
-	data, err = f.RefreshShared([]byte("data"))
+	data, err = FetcherRefreshShared(server, []byte("data"))
 	if err != nil || bytes.Compare(data, []byte("testdata")) != 0 {
 		t.Fatal(data, err)
 	}
