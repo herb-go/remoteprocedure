@@ -12,7 +12,7 @@ func FetcherRefreshShared(s *fetcher.Server, data []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	_, err = p.With(fetcher.Method("POST")).FetchWithBodyAndParse(bytes.NewBuffer(data), fetcher.Should200(fetcher.AsBytes(&result)))
+	_, err = p.CloneWith(fetcher.Method("POST")).FetchWithBodyAndParse(bytes.NewBuffer(data), fetcher.Should200(fetcher.AsBytes(&result)))
 	if err != nil {
 		return nil, err
 	}
